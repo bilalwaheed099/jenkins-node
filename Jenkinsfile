@@ -1,47 +1,33 @@
 pipeline {
   agent any
-  parameters {
-    choice(name: "Version", choices: ['1.1', '1.2', '1.3'], description: "")
-    booleanParam(name: "executeTests", defaultValue: true, description: "")
-  }
   stages {
-    stage('init') {
-      steps {
-        script {
-          gv = load "script.groovy"
-        }
-      }
-    }
-
     stage("build") {
-      steps { 
-        script {
-          gv.buildApp()
-        }
-      }
-    }
-
-    stage("test") {
-      when {
-        expression {
-          params.executeTests
-        }
-      }
       steps {
         script {
-          gv.testApp()
+          echo "Building the application..."
         }
+
       }
     }
+    stage("build image") {
+      steps {
+        script {
+          echo "Building the docker image..."
+          withCredentials([usernamePassword(credentialsId: 'dockerhub-repo', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+            sh 'docker build -t bytebad/my-repo:jn-2.0 .'
+            sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
+            sh 'docker push bytebad/my-repo:jn-2.0'
+          }
+        }
 
+      }
+    }
     stage("deploy") {
       steps {
         script {
-          env.ENV = input messsage: "Select the deployment environment", ok: "Done", parameters: [choice(name: "env", choices: ['dev', 'staging', 'prod'], description: '')]
-          gv.deployApp()
-          echo "Deploying on ${ENV}"
+          echo "Deploying the application..."
         }
       }
     }
-  } 
+  }
 }
