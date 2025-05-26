@@ -2,8 +2,6 @@ const express = require('express');
 
 const app = express();
 
-// test server
-
 app.get('/', (req, res) => {
   res.json({ success: true });
 });
