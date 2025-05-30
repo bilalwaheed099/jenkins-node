@@ -8,7 +8,7 @@ pipeline {
     stage('init') {
       steps {
         script {
-          def gv = load "script.groovy"
+         gv = load "script.groovy"
         }
       }
     }
@@ -42,7 +42,7 @@ pipeline {
           def dockerCmd = 'docker run -p 4000:4000 -d bytebad/my-repo:jn-3.0'
           echo "Deploying the application"
           sshagent(['ec2-server-key']) {
-            echo "ssh -o StrictHostKeyChecking=no ec2-user@35.159.15.201 ${dockerCmd}"
+            sh "ssh -o StrictHostKeyChecking=no ec2-user@35.159.15.201 ${dockerCmd}"
           }
         }
       }

@@ -8,7 +8,7 @@ def testApp () {
 
 def deployApp () {
     echo "deploying the app"
-    echo "deploying version ${params.Version}"
+    // echo "deploying version ${params.Version}"
 }
 
 return this
