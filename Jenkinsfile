@@ -37,9 +37,13 @@ pipeline {
     stage("deploy") {
       steps {
         script {
-          env.ENV = input messsage: "Select the deployment environment", ok: "Done", parameters: [choice(name: "env", choices: ['dev', 'staging', 'prod'], description: '')]
-          gv.deployApp()
-          echo "Test deployment another"
+          // env.ENV = input messsage: "Select the deployment environment", ok: "Done", parameters: [choice(name: "env", choices: ['dev', 'staging', 'prod'], description: '')]
+          // gv.deployApp()
+          def dockerCmd = 'docker run -p 4000:4000 -d bytebad/my-repo:jn-3.0'
+          echo "Deploying the application"
+          sshagent(['ec2-server-key']) {
+            echo "ssh -o StrictHostKeyChecking=no ec2-user@35.159.15.201 ${dockerCmd}"
+          }
         }
       }
     }
