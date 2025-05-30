@@ -1,14 +1,14 @@
 pipeline {
   agent any
-  parameters {
-    choice(name: "Version", choices: ['1.1', '1.2', '1.3'], description: "")
-    booleanParam(name: "executeTests", defaultValue: true, description: "")
-  }
+  // parameters {
+  //   choice(name: "Version", choices: ['1.1', '1.2', '1.3'], description: "")
+  //   booleanParam(name: "executeTests", defaultValue: true, description: "")
+  // }
   stages {
     stage('init') {
       steps {
         script {
-          gv = load "script.groovy"
+          def gv = load "script.groovy"
         }
       }
     }
