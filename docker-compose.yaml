@@ -1,0 +1,12 @@
+version: '3.9'
+services:
+  server:
+    image: bytebad/my-repo:jn-3.0
+    ports:
+      - 4000:4000
+  postgres:
+    image: postgres:15
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=password
